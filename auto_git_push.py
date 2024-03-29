@@ -29,19 +29,26 @@ class CodeChangeHandler(FileSystemEventHandler):
 
     def commit_and_push_changes(self):
         try:
-            # Stage all changes
-            repo.git.add('--all')
+            # Check if there are changes to commit
+            if repo.is_dirty(untracked_files=True):
+                # Stage all changes
+                repo.git.add('--all')
 
-            # Commit changes
-            repo.git.commit('-m', 'Automatic commit')
+                # Commit changes
+                repo.git.commit('-m', 'Automatic commit')
 
-            # Push changes to GitHub
-            origin = repo.remote(name='origin')
-            origin.push()
-            print("Changes pushed to GitHub.")
+                # Push changes to GitHub
+                origin = repo.remote(name='origin')
+                origin.push()
+                print("Changes pushed to GitHub.")
+            else:
+                print("No changes to commit.")
         except Exception as e:
             print(f"Error occurred: {str(e)}")
 
+
+
+    
 if __name__ == "__main__":
     # Initialize watchdog observer
     event_handler = CodeChangeHandler()

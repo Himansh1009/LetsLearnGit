@@ -1,5 +1,5 @@
 import os
-import sys
+import time
 from git import Repo
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
@@ -7,22 +7,8 @@ from watchdog.events import FileSystemEventHandler
 # Path to your Git repository
 repo_path = '/home/himanshu1009/Desktop/everything_in_here/GITDEMO/githarkat'
 
-# Check if the repository directory exists
-if not os.path.exists(repo_path):
-    print(f"Repository directory '{repo_path}' does not exist. Creating it...")
-    try:
-        os.makedirs(repo_path)
-        print("Directory created successfully.")
-    except Exception as e:
-        print(f"Error occurred while creating directory: {str(e)}")
-        sys.exit(1)
-
-# Initialize Git repository object or create a new one if it doesn't exist
-try:
-    repo = Repo(repo_path)
-except Exception as e:
-    print(f"Error occurred while initializing Git repository: {str(e)}")
-    sys.exit(1)
+# Initialize Git repository object
+repo = Repo(repo_path)
 
 # Define a custom event handler for monitoring file system changes
 class CodeChangeHandler(FileSystemEventHandler):
@@ -65,7 +51,8 @@ if __name__ == "__main__":
 
     try:
         while True:
-            pass
+            time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
         observer.join()
+
